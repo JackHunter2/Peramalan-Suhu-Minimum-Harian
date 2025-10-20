@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Peramalan Suhu Minimum Harian</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet"/>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg sticky-top navbar-blur">
+  <div class="container">
+    <a class="navbar-brand fw-semibold" href="/"><i class="bi bi-thermometer-half me-2"></i>Peramalan Suhu</a>
+    <div class="ms-auto d-flex align-items-center gap-3">
+      <span class="badge badge-soft">LSTM</span>
+      <button id="themeToggle" class="btn btn-sm btn-outline-secondary"><i class="bi bi-moon-stars"></i></button>
+    </div>
+  </div>
+  </nav>
+<div class="container">
+    <div class="card p-4">
+        <h1 class="text-center">Peramalan Suhu Minimum Harian</h1>
+        <p class="text-center" style="color:var(--muted)">Unggah CSV (tanggal, suhu) untuk melihat histori dan melakukan peramalan interaktif.</p>
+
+        <form method="POST" enctype="multipart/form-data" action="/upload" class="row g-3" id="uploadForm">
+            <div class="col-12">
+                <div class="dropzone" id="dropzone">Seret & letakkan CSV di sini atau klik untuk memilih</div>
+                <input class="form-control d-none" type="file" id="file" name="file" accept=".csv" required>
+            </div>
+            <div class="col-12 d-grid">
+                <button class="btn btn-primary" type="submit"><i class="bi bi-upload me-1"></i>Unggah & Tampilkan</button>
+            </div>
+        </form>
+
+        <!-- pesan / notifikasi -->
+        {% if message %}
+        <div class="alert alert-info mt-3" role="alert">
+            {{ message }}
+        </div>
+        {% endif %}
+
+        <!-- Plot data historis (interaktif) -->
+        <div class="mt-4">
+            <h5>Data Historis</h5>
+            <div class="border rounded p-3 bg-white">
+                <canvas id="historyChart" height="120"></canvas>
+            </div>
+            <div class="text-muted small mt-2" id="historyEmpty">Jika kosong, unggah CSV untuk memuat data.</div>
+        </div>
+
+        <!-- Kontrol prediksi cepat -->
+        <div class="mt-4">
+            <div class="d-flex align-items-center gap-2">
+                <label for="nDays" class="col-form-label">Prediksi (hari):</label>
+                <input type="number" id="nDays" value="7" min="1" max="365" class="form-control" style="width:120px">
+                <button id="btnForecast" class="btn btn-success"><i class="bi bi-magic me-1"></i>Forecast</button>
+                <a href="/predict" class="btn btn-outline-secondary ms-auto"><i class="bi bi-bar-chart-line me-1"></i>Mode Lanjutan</a>
+            </div>
+        </div>
+
+        <!-- Plot forecast interaktif -->
+        <div class="mt-3" id="forecastSection" style="display:none;">
+            <h5>History + Forecast</h5>
+            <div class="border rounded p-3 bg-white">
+                <canvas id="forecastChart" height="130"></canvas>
+            </div>
+            <div class="mt-2 d-flex align-items-center gap-2">
+                <button id="btnDownloadCsv" class="btn btn-sm btn-outline-primary"><i class="bi bi-download me-1"></i>Unduh CSV Prediksi</button>
+                <div id="loading" class="spinner-border spinner-border-sm text-primary" role="status" style="display:none;"></div>
+            </div>
+        </div>
+
+        <hr class="mt-4"/>
+
+        <div class="text-muted small">
+            Petunjuk: file CSV harus berisi tanggal di kolom pertama dan nilai target (numerik) di kolom kedua. Contoh baris: <code>1981-01-01,20.7</code>.
+        </div>
+    </div>
+
+    <footer class="text-center mt-3 text-muted small">© 2025 — TA-04 LSTM Time Series</footer>
+</div>
+</body>
+<script src="{{ url_for('static', filename='js/index.js') }}"></script>
+</html>

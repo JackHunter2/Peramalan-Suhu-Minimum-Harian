@@ -1,0 +1,15 @@
+:root { --bg: linear-gradient(135deg, #eef2ff 0%, #f8fbff 100%); --text:#1f2937; --muted:#6b7280; --card-bg: rgba(255,255,255,0.7); --border: rgba(17,24,39,0.06); --primary:#0d6efd; --accent:#6366f1; }
+:root.dark { --bg: linear-gradient(135deg, #0f172a 0%, #111827 100%); --text:#e5e7eb; --muted:#9ca3af; --card-bg: rgba(17,24,39,0.6); --border: rgba(255,255,255,0.08); --primary:#60a5fa; --accent:#a78bfa; }
+body { background:var(--bg); color:var(--text); font-family: "Segoe UI", sans-serif; transition: background 0.4s ease, color 0.3s ease; }
+.container { max-width: 1000px; margin-top:36px; margin-bottom:36px; }
+.card { border-radius:16px; box-shadow:0 10px 30px rgba(16,24,40,0.10); background:var(--card-bg); backdrop-filter: blur(10px); border:1px solid var(--border); }
+h1 { color:var(--primary); font-weight:700; letter-spacing:0.2px; }
+img { max-width:100%; border-radius:8px; margin-top:12px; }
+.navbar-blur { backdrop-filter: saturate(180%) blur(12px); background: var(--card-bg) !important; border-bottom:1px solid var(--border); }
+.btn-primary { background: var(--accent); border-color: var(--accent); }
+.btn-primary:hover { filter: brightness(0.95); }
+.btn-success { background: linear-gradient(135deg, #16a34a, #22c55e); border: none; }
+.badge-soft { background: rgba(99,102,241,0.12); color: var(--accent); border:1px solid rgba(99,102,241,0.25); }
+.dropzone { border:2px dashed #a1b5ff; background:#eef4ff; padding:18px; border-radius:10px; text-align:center; color:#355; }
+.dropzone.dragover { background:#e0ebff; }
+
